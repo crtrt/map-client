@@ -1,0 +1,61 @@
+<template>
+   <div class="home">
+      <!--轮播图-->
+      <swiper/>
+
+      <div class="section">
+         基于情感分析的智慧养老系统是一个人工智能项目。通过摄像头实时拍摄到的画面，人工智能算法实时分析老人的情感、分析是否有人摔倒、分析是否有人闯入禁止区域、分析老人是否有和义工互动并追踪义工、分析是否有陌生人出现并追踪陌生人。一旦上述事件发生，该事件会立即插入到数据库中。这些事件数据被实时地更新在报表中，管理人员因此可以迅速做出反应。
+      </div>
+
+
+   </div>
+</template>
+
+<script>
+   import Swiper from '../components/Base/swiperList'
+   import {mapGetters} from "vuex";
+    export default {
+        name: "Home",
+       components: {
+          Swiper,
+
+       },
+       computed: {
+          ...mapGetters([
+             'userId',
+          ])
+       },
+       mounted() {
+          // 先登录
+          console.log("Userid:"+this.userId)
+
+
+
+       },
+
+    }
+</script>
+
+<style  scoped>
+
+/*   .home {*/
+/*      margin-top: $header-height - 10px;*/
+/*   .section {*/
+/*      width: 100%;*/
+/*      margin-top: 20px;*/
+/*      padding: $content-padding;*/
+/*      background-color: $color-white;*/
+/*      box-sizing: border-box;*/
+/*   .section-title {*/
+/*      height: 60px;*/
+/*      line-height: 50px;*/
+/*      padding-top: 5px;*/
+/*      font-size: 24px;*/
+/*      font-weight: 500;*/
+/*   //text-align: center;*/
+/*      color: $color-black;*/
+/*      box-sizing: border-box;*/
+/*   }*/
+/*   }*/
+/*   }*/
+</style>

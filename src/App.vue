@@ -1,28 +1,60 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div id="app" >
+
+        <the-menu v-if="$route.meta.keepAlive"></the-menu>
+
+        <the-header v-if="$route.meta.keepAlive"></the-header>
+
+        <div  class="right-container" :class="{'collapse-ml': isCollapse}">
+
+            <AppMain></AppMain>
+
+        </div>
+
+    </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+  import TheHeader from './components/Base/TheHeader'
+  import TheMenu from './components/Base/TheMenu'
+  import AppMain from './components/Base/AppMain'
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
+  import { mapState } from 'vuex'
+  export default {
+    name: 'App',
+    components: {
+      TheHeader,
+      TheMenu,
+      AppMain
+    },
+    computed: {
+      ...mapState({
+        isCollapse: (state) => state.common.isCollapse
+      })
+    },
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+
 }
+</script >
+
+
+<style lang="scss" >
+    #app{
+        ::-webkit-scrollbar {
+            width: 0 !important;
+        }
+        ::-webkit-scrollbar {
+            width: 0 !important;height: 0;
+        }
+
+    }
+    .right-container{
+        width: 100%;
+        min-height: 100%;
+        margin-left: 180px;
+        transition: margin-left 0.28s;
+    }
+    .collapse-ml{
+        margin-left: 64px
+    }
 </style>
