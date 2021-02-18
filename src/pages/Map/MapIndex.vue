@@ -1,10 +1,10 @@
 <template>
     <div class="map-outbox">
 
-        <!-- 侧边table -->
+<!--         侧边table -->
         <el-button type="text" @click="table = true">打开线路列表</el-button>
 
-        <!-- 地图 -->
+<!--         地图 -->
         <div id="container"></div>
 
 

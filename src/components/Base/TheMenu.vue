@@ -1,6 +1,6 @@
 // sidebar.vue
 <template>
-    <div class="sidebar-container" :class="{'collapse-width': isCollapse}">
+    <div class="sidebar-container"  :class="{'collapse-width': isCollapse}">
         <div class="logo" :class="{'collapse-logo': isCollapse}">
             MAP SHOW
         </div>
@@ -14,19 +14,20 @@
                 :collapse="isCollapse"
                 unique-opened
                 router
+                @select="handleSelect"
         >
-            <el-menu-item index="dashboard">
+            <el-menu-item index="/Home">
                 <i class="el-icon-menu"></i>
-                <span slot="title">控制面板</span>
+                <span slot="title">首页</span>
             </el-menu-item>
-            <el-menu-item index="link1">
+            <el-menu-item index="/Map">
                 <i class="el-icon-menu"></i>
-                <span slot="title">导航一</span>
+                <span slot="title">地图</span>
             </el-menu-item>
-            <el-menu-item index="link2">
-                <i class="el-icon-document"></i>
-                <span slot="title">导航二</span>
-            </el-menu-item>
+<!--            <el-menu-item index="link2">-->
+<!--                <i class="el-icon-document"></i>-->
+<!--                <span slot="title">导航二</span>-->
+<!--            </el-menu-item>-->
 
         </el-menu>
     </div>
@@ -44,7 +45,11 @@
                 isCollapse: (state) => state.common.isCollapse
             })
         },
-        methods: {}
+        methods: {
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath)
+            }
+        }
     }
 </script>
 

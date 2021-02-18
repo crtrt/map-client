@@ -4,7 +4,7 @@ import Router from 'vue-router'
 
 import Index from '@/pages/Index'
 import Map from '@/pages/Map/MapIndex'
-
+import Home from '@/pages/Home'
 
 // import Setting from '@/pages/Setting'
 // import AdminList from '@/pages/AdminList'
@@ -43,17 +43,19 @@ export default new Router({
     {
       path: '/Home',
       name: 'Home',
-      component: () => import('@/pages/Home'),
+      component: Home,
       meta: {
-        keepAlive: true
+        keepAlive: true,
+        title:"Home"
       }
     },
     {
-      path: '/',
+      path: '/Map',
       name: 'Map',
       component: Map,
       meta: {
-        keepAlive: true
+        keepAlive: true,
+        title:"Map"
       }
     },
 

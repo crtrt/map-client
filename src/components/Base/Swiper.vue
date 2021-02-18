@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { swiperList } from 'swiperList'
+import { swiperList } from './swiperPic'
 
 export default {
   name: 'swiper',

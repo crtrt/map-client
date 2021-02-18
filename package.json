@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "babel-eslint": "^7.2.3",
     "core-js": "^3.6.5",
     "echarts": "^5.0.2",
     "element-ui": "^2.15.0",
@@ -26,13 +27,14 @@
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2",
+    "eslint": "^6.8.0",
+    "eslint-plugin-vue": "^7.6.0",
     "sass-loader": "^7.3.1",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
     "root": true,
+    "parser": "babel-eslint",
     "env": {
       "node": true
     },
@@ -49,5 +51,18 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "description": "## Project setup ``` npm install ```",
+  "main": ".eslintrc.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crtrt/map-client.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/crtrt/map-client/issues"
+  },
+  "homepage": "https://github.com/crtrt/map-client#readme"
 }

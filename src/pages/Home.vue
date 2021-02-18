@@ -12,7 +12,7 @@
 </template>
 
 <script>
-   import Swiper from '../components/Base/swiperList'
+   import Swiper from '../components/Base/Swiper'
    import {mapGetters} from "vuex";
     export default {
         name: "Home",
@@ -38,24 +38,4 @@
 
 <style  scoped>
 
-/*   .home {*/
-/*      margin-top: $header-height - 10px;*/
-/*   .section {*/
-/*      width: 100%;*/
-/*      margin-top: 20px;*/
-/*      padding: $content-padding;*/
-/*      background-color: $color-white;*/
-/*      box-sizing: border-box;*/
-/*   .section-title {*/
-/*      height: 60px;*/
-/*      line-height: 50px;*/
-/*      padding-top: 5px;*/
-/*      font-size: 24px;*/
-/*      font-weight: 500;*/
-/*   //text-align: center;*/
-/*      color: $color-black;*/
-/*      box-sizing: border-box;*/
-/*   }*/
-/*   }*/
-/*   }*/
 </style>
