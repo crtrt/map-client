@@ -5,14 +5,12 @@ import store from './store/index'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import iView from 'iview'
-import AMap from 'vue-amap'
+
 import 'iview/dist/styles/iview.css'
 import * as echarts from "echarts";
 
 
-
-
-Vue.use(iView)
+import AMap from 'vue-amap'
 Vue.use(AMap)
 AMap.initAMapApiLoader({
   // 高德的key
@@ -23,6 +21,8 @@ AMap.initAMapApiLoader({
   v: '2.0'
 })
 
+
+Vue.use(iView)
 Vue.use(ElementUI)
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false

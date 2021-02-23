@@ -24,6 +24,10 @@
                 <i class="el-icon-menu"></i>
                 <span slot="title">地图</span>
             </el-menu-item>
+            <el-menu-item index="/MapSecond">
+                <i class="el-icon-menu"></i>
+                <span slot="title">地图2</span>
+            </el-menu-item>
 <!--            <el-menu-item index="link2">-->
 <!--                <i class="el-icon-document"></i>-->
 <!--                <span slot="title">导航二</span>-->

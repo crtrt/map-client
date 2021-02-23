@@ -1,10 +1,10 @@
 <template>
     <div class="map-outbox">
 
-<!--         侧边table -->
+        <!--         侧边table -->
         <el-button type="text" @click="table = true">打开线路列表</el-button>
 
-<!--         地图 -->
+        <!--         地图 -->
         <div id="container"></div>
 
 
@@ -13,11 +13,11 @@
                 :visible.sync="table"
                 direction="rtl"
                 size="50%">
-<!--            <el-table :data="gridData">-->
-<!--                <el-table-column property="date" label="日期" width="150"></el-table-column>-->
-<!--                <el-table-column property="name" label="姓名" width="200"></el-table-column>-->
-<!--                <el-table-column property="address" label="地址"></el-table-column>-->
-<!--            </el-table>-->
+            <!--            <el-table :data="gridData">-->
+            <!--                <el-table-column property="date" label="日期" width="150"></el-table-column>-->
+            <!--                <el-table-column property="name" label="姓名" width="200"></el-table-column>-->
+            <!--                <el-table-column property="address" label="地址"></el-table-column>-->
+            <!--            </el-table>-->
             <route-table class="map-table" ></route-table>
         </el-drawer>
 
@@ -57,13 +57,13 @@
 </template>
 
 <script>
-    import { linePath } from "./index.js";
-    // import car from "../../assets/image/car.png";
+    import { linePath, marks } from "./index.js";
+    import car from "../../assets/image/car.png";
     import routeTable from "../../components/Map/RouteTable";
 
 
     export default {
-        name: "index",
+
         components: {
             routeTable
         },
@@ -84,107 +84,67 @@
                 pathList: [],
                 trackList: [],
 
-                trackAni:null,
-
                 table: false,
                 loading: false,
             };
         },
 
         mounted() {
-            // //地图初始信息
-            // let param = {
-            //
-            //     resizeEnable: true,
-            //     rotateEnable:true,
-            //     pitchEnable:true,
-            //     zoom: 17, // 地图缩放范围
-            //     pitch:80,
-            //     rotation:-15,
-            //     viewMode:'3D',//开启3D视图,默认为关闭
-            //     buildingAnimation:true,//楼块出现是否带动画
-            //
-            //     expandZoomRange:true,
-            //     zooms:[3,20],
-            // };
+            let param = {
+                resizeEnable: true,
+                zoom: 15    // 地图缩放范围
+            };
+            setTimeout(() => {
 
 
-            this.map = new BMapGL.Map('container'); // 创建Map实例
-            this.map.centerAndZoom(new BMapGL.Point(39.997761, 116.478935), 17);    // 初始化地图，设置中心点坐标和地图级别
-            this.map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
-            // setTimeout(() => {
-            //
+                this.map = new AMap.Map("container", param);
                 this.init();
-            // }, 500);
+            }, 500);
 
         },
         methods: {
             init() {
-                var point = [];
-                for (var i = 0; i < linePath.length; i++) {
-                    var poi = new BMapGL.Point(linePath[i].longitude, linePath[i].latitude);
-                    point.push(poi);
-                    var marker = new BMapGL.Marker(poi); //创建标注
-                    this.map.addOverlay(marker); //将标注添加到地图中
-                }
-
-
-                var pl = new BMapGL.Polyline(point,{strokeColor:"blue", strokeWeight:6, strokeOpacity:0.5});
-
-                var trackAni = new BMapGLLib.TrackAnimation(this.map, pl, {
-                    overallView: true, // 动画完成后自动调整视野到总览
-                    tilt: 30,          // 轨迹播放的角度，默认为55
-                    duration: 20000,   // 动画持续时长，默认为10000，单位ms
-                    delay: 3000        // 动画开始的延迟，默认0，单位ms
+                // 创建起始和经过的icon
+                // let iconList = [];
+                marks.forEach(item => {
+                    this.addMarker(item);
                 });
 
-                trackAni.start();
+                // 轨迹
+                let trackList = linePath;
+                let len = trackList.length;
+                let startPoint = trackList[0];
+                let endPoint = trackList[len - 1];
+                this.pathList.splice(0, this.pathList.length);
+                trackList.forEach(item => {
+                    this.pathList.push([item.longitude, item.latitude]);
+                    item.stampTime = new Date(item.time).getTime(); //当前时间戳
+                });
+                // 下一段路程经历了多少s,intervalTime,nextDistance:下一段路程：m,nextDistance:下一段路速度：km/h
+                trackList.forEach((item, i) => {
+                    let next = trackList[i + 1];
+                    if (next) {
+                        item.intervalTime = (next.stampTime - item.stampTime) / 1000;
+                        item.nextDistance = this.distanceFun(
+                            [item.longitude, item.latitude],
+                            [next.longitude, next.latitude]
+                        );
+                        item.nextSpeed =
+                            item.nextDistance / 1000 / (item.intervalTime / 60 / 60);
+                    }
+                });
+                // 订单记录总时间，hh:mm:ss
+                this.totalTime = this.getTime(
+                    (endPoint.stampTime - startPoint.stampTime) / 1000
+                );
+                this.trackList = trackList;
+                this.setPath();
                 this.setTools();
-        //
-        //         // 创建起始和经过的icon
-        //         marks.forEach(item => {
-        //             this.addMarker(item);
-        //         });
-
-                // // 轨迹
-                // let trackList = linePath;
-                // let len = trackList.length;
-                // let startPoint = trackList[0];
-                // let endPoint = trackList[len - 1];
-                // this.pathList.splice(0, this.pathList.length);
-                // trackList.forEach(item => {
-                //     this.pathList.push([item.longitude, item.latitude]);
-                //     item.stampTime = new Date(item.time).getTime(); //当前时间戳
-                // });
-                // // 下一段路程经历了多少s,intervalTime,nextDistance:下一段路程：m,nextDistance:下一段路速度：km/h
-                // trackList.forEach((item, i) => {
-                //     let next = trackList[i + 1];
-                //     if (next) {
-                //         item.intervalTime = (next.stampTime - item.stampTime) / 1000;
-                //         item.nextDistance = this.distanceFun(
-                //             [item.longitude, item.latitude],
-                //             [next.longitude, next.latitude]
-                //         );
-                //         item.nextSpeed =
-                //             item.nextDistance / 1000 / (item.intervalTime / 60 / 60);
-                //     }
-                // });
-                // // 订单记录总时间，hh:mm:ss
-                // this.totalTime = this.getTime(
-                //     (endPoint.stampTime - startPoint.stampTime) / 1000
-                // );
-                // this.trackList = trackList;
-                // this.setPath();
-                // this.drag();
-                //
-
-
-
-
+                this.drag();
             },
             setTools(){
                 let that = this;
-                BMapGL.plugin(['AMap.ToolBar', 'AMap.ControlBar', 'AMap.MapType', 'AMap.Scale', 'AMap.Geolocation'], function () { //异步加载插件
+                AMap.plugin(['AMap.ToolBar', 'AMap.ControlBar', 'AMap.MapType', 'AMap.Scale', 'AMap.Geolocation'], function () { //异步加载插件
                     //添加控件-比例尺控件
                     that.map.addControl(new AMap.Scale());
                     //添加控件-工具条控件
@@ -201,27 +161,165 @@
 
                 })
             },
-        //     setPath() {
-        //         let that = this;
-        //
-        //         let point = that.linePath;
-        //
-        //         for (var i = 0; i < that.linePath.length; i++) {
-        //             point.push(new BMapGL.Point(that.linePath[i].longitude, that.linePath[i].latitude));
-        //         }
-        //         let pl = new BMapGL.Polyline(point);
-        //
-        //         that.trackAni = new BMapGLLib.TrackAnimation(that.map, pl, {
-        //             overallView: true, // 动画完成后自动调整视野到总览
-        //             tilt: 30,          // 轨迹播放的角度，默认为55
-        //             duration: 20000,   // 动画持续时长，默认为10000，单位ms
-        //             delay: 3000        // 动画开始的延迟，默认0，单位ms
-        //         });
-        //
-        //         that.trackAni.start();
-        //
-        //
-        //     },
+            setPath() {
+                let that = this;
+
+                AMapUI.load(["ui/misc/PathSimplifier", "lib/$"], function(
+                    PathSimplifier
+                ) {
+                    if (!PathSimplifier.supportCanvas) {
+                        console.log("当前环境不支持 Canvas！");
+                        return;
+                    }
+                    let trackList = that.trackList;
+                    let len = trackList.length;
+                    let startPoint = trackList[0];
+                    let endPoint = trackList[len - 1];
+                    // 轨迹总数
+                    function onload() {
+                        that.pathSimplifierIns.renderLater();
+                    }
+                    function onerror() {
+                        console.log("图片加载失败！");
+                    }
+
+                    // 历史轨迹巡航器
+                    that.pathSimplifierIns = new PathSimplifier({
+                        zIndex: 100,
+                        //autoSetFitView:false,
+                        map: that.map, //所属的地图实例
+
+                        getPath: function(pathData) {
+                            return pathData.path;
+                        },
+                        getHoverTitle: function(pathData) {
+                            return pathData.index;
+                        },
+                        autoSetFitView: true,
+                        // 巡航器样式
+                        renderOptions: {
+                            pathNavigatorStyle: {
+                                initRotateDegree: 0,
+                                width: 20,
+                                height: 32,
+                                autoRotate: true,
+                                lineJoin: "round",
+                                content: PathSimplifier.Render.Canvas.getImageContent(
+                                    car,
+                                    onload,
+                                    onerror
+                                ),
+                                fillStyle: null,
+                                strokeStyle: null,
+                                lineWidth: 1,
+                                pathLinePassedStyle: {
+                                    lineWidth: 6,
+                                    strokeStyle: "#2cdf4d"
+                                }
+                            },
+                            pathLineStyle: {
+                                lineWidth: 6,
+                                strokeStyle: "#2e9c08"
+                            },
+                            pathLineHoverStyle: {
+                                lineWidth: 0,
+                                borderWidth: 0
+                            },
+                            pathLineSelectedStyle: {
+                                lineWidth: 6,
+                                borderWidth: 0,
+                                strokeStyle: "#2e9c08"
+                            },
+                            pathTolerance: 0,
+                            keyPointTolerance: -1,
+                            renderAllPointsIfNumberBelow: 0 //绘制路线节点，如不需要可设置为-1
+                        }
+                    });
+
+                    //历史轨迹巡航器设置数据
+                    that.pathSimplifierIns.setData([
+                        {
+                            name: "轨迹",
+                            path: that.pathList
+                        }
+                    ]);
+                    that.pathSimplifierIns.setFitView(-1);
+
+                    let startSpeed = that.speedFun(
+                        that.pathList[0],
+                        that.pathList[1],
+                        startPoint.intervalTime
+                    );
+                    startSpeed === 0 && (startSpeed = 0.1);
+
+                    //对第一条线路（即索引 0）创建一个巡航器
+                    that.navgtr = that.pathSimplifierIns.createPathNavigator(0, {
+                        loop: false, //循环播放
+                        speed: startSpeed * that.times //巡航速度，单位千米/小时
+                    });
+
+                    //构建自定义信息窗体
+                    let infoContent = `<p class="info-window">时间：<span>${
+                        startPoint.time
+                    } `;
+                    let infoWindow = new AMap.InfoWindow({
+                        anchor: "bottom-center",
+                        content: infoContent
+                    });
+
+                    infoWindow.open(that.map, that.pathList[0]);
+                    // 移动过程中
+                    that.navgtr.on("move", function() {
+                        that.playIcon = "resume";
+                        let idx = this.getCursor().idx; //走到了第几个点
+                        let tail = this.getCursor().tail; //至下一个节点的比例位置
+                        let totalIdx = idx + tail;
+
+                        // 计算下一个距离速度
+                        let point = trackList[idx];
+                        if (idx < len - 1) {
+                            point.nextSpeed === 0 && (point.nextSpeed = 0.1);
+                            that.navgtr.setSpeed(point.nextSpeed * that.times);
+                        }
+
+                        // 剩余公里数，窗体随时移动展示
+                        point &&
+                        point.time &&
+                        infoWindow.setContent(
+                            `<p class="info-window">时间：<span>${point.time}`
+                        );
+                        infoWindow.open(that.map, that.navgtr.getPosition());
+                        // 进度条实时展示tail
+                        !that.isOnSlider && (that.sliderVal = (totalIdx / len) * 100);
+                        // 已经播放时间
+                        // let sTime = (pointObj.stampTime-startStampTime)/1000;
+                        let sTime = parseInt(
+                            (((endPoint.stampTime - startPoint.stampTime) / 1000) *
+                                that.sliderVal) /
+                            100
+                        );
+
+                        that.passedTime = that.getTime(sTime);
+                        // 如果到头了，回到初始状态
+                        if (that.navgtr.isCursorAtPathEnd()) {
+                            that.playIcon = "start";
+                            that.isPlay = false;
+                            that.sliderVal = 100;
+                            that.passedTime = that.totalTime;
+                        }
+                    });
+
+                    that.navgtr.on("start resume", function() {
+                        that.navgtr._startTime = Date.now();
+                        that.navgtr._startDist = this.getMovedDistance();
+                    });
+                    that.navgtr.on("stop pause", function() {
+                        that.navgtr._movedTime = Date.now() - that.navgtr._startTime;
+                        that.navgtr._movedDist =
+                            this.getMovedDistance() - that.navgtr._startDist;
+                    });
+                });
+            },
             // 开始、暂停、继续等操作
             navgControl(action) {
                 if (action === "start") {
@@ -314,22 +412,13 @@
                 this.pathSimplifierIns.renderLater();
             },
             addMarker(item) {
-                // let marker = new BMapGL.Marker({
-                //     icon:
-                //         "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
-                //     position: [item.longitude, item.latitude],
-                //     offset: new AMap.Pixel(-13, -30)
-                // });
-
-                let point = new BMapGL.Point(item.longitude, item.latitude);
-                let myIcon = new BMapGL.Icon("markers.png", new BMapGL.Size(23, 25), {
-
-                    anchor: new BMapGL.Size(10, 25),
-                    imageOffset: new BMapGL.Size(0, 0 - 25)   // 设置图片偏移
+                let marker = new AMap.Marker({
+                    icon:
+                        "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+                    position: [item.longitude, item.latitude],
+                    offset: new AMap.Pixel(-13, -30)
                 });
-                // 创建标注对象并添加到地图
-                let marker = new BMapGL.Marker(point, {icon: myIcon});
-                this.map.addOverlay(marker);
+                marker.setMap(this.map);
             }
         },
         beforeDestroy() {
@@ -500,4 +589,5 @@
         z-index: 200;
     }
 </style>
+
 

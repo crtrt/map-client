@@ -10,8 +10,10 @@ module.exports = {
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly",
+        "BMapGL": "true",
         "AMap": "true",
-        "AMapUI":"true",
+        "AMapUI": "true",
+        "BMapGLLib":"true",
     },
     "parserOptions": {
         "ecmaVersion": 2018,
