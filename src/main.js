@@ -22,6 +22,7 @@ AMap.initAMapApiLoader({
 })
 
 
+
 Vue.use(iView)
 Vue.use(ElementUI)
 Vue.prototype.$echarts = echarts

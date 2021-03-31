@@ -23,9 +23,6 @@
 
 
 
-
-
-
         <!-- 进度条 -->
         <div class="map-control">
             <Icon
@@ -112,6 +109,7 @@
             this.map = new BMapGL.Map('container'); // 创建Map实例
             this.map.centerAndZoom(new BMapGL.Point(39.997761, 116.478935), 17);    // 初始化地图，设置中心点坐标和地图级别
             this.map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+
             // setTimeout(() => {
             //
                 this.init();
@@ -184,22 +182,10 @@
             },
             setTools(){
                 let that = this;
-                BMapGL.plugin(['AMap.ToolBar', 'AMap.ControlBar', 'AMap.MapType', 'AMap.Scale', 'AMap.Geolocation'], function () { //异步加载插件
-                    //添加控件-比例尺控件
-                    that.map.addControl(new AMap.Scale());
-                    //添加控件-工具条控件
-                    that.map.addControl(new AMap.ToolBar());
+                //添加地图类型控件
+                that.map.addControl(new BMap.MapTypeControl());
 
-                    that.map.addControl(new AMap.ControlBar({
-                        showZoomBar:false,
-                        showControlButton:true,
-                        position:{
-                            right:'10px',
-                            top:'10px'
-                        }
-                    }));
 
-                })
             },
         //     setPath() {
         //         let that = this;

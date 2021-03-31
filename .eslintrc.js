@@ -11,9 +11,14 @@ module.exports = {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly",
         "BMapGL": "true",
+        "BMapGLLib":"true",
+        "BMap":"true",
+
+
         "AMap": "true",
         "AMapUI": "true",
-        "BMapGLLib":"true",
+
+
     },
     "parserOptions": {
         "ecmaVersion": 2018,

@@ -6,6 +6,7 @@ import Index from '@/pages/Index'
 import Map from '@/pages/Map/MapIndex'
 import Home from '@/pages/Home'
 import MapSecond from '@/pages/Map/MapSecond'
+import MapThird from '@/pages/Map/MapThird'
 
 // import Setting from '@/pages/Setting'
 // import AdminList from '@/pages/AdminList'
@@ -70,6 +71,15 @@ export default new Router({
       }
     },
 
+    {
+      path: '/MapThird',
+      name: 'MapThird',
+      component: MapThird,
+      meta: {
+        keepAlive: true,
+        title:"Map"
+      }
+    },
     //
     //
     // {

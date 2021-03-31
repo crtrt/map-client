@@ -13,11 +13,11 @@
                 :visible.sync="table"
                 direction="rtl"
                 size="50%">
-            <!--            <el-table :data="gridData">-->
-            <!--                <el-table-column property="date" label="日期" width="150"></el-table-column>-->
-            <!--                <el-table-column property="name" label="姓名" width="200"></el-table-column>-->
-            <!--                <el-table-column property="address" label="地址"></el-table-column>-->
-            <!--            </el-table>-->
+                        <el-table :data="gridData">
+                            <el-table-column property="date" label="日期" width="150"></el-table-column>
+                            <el-table-column property="name" label="姓名" width="200"></el-table-column>
+                            <el-table-column property="address" label="地址"></el-table-column>
+                        </el-table>
             <route-table class="map-table" ></route-table>
         </el-drawer>
 
@@ -59,6 +59,7 @@
 <script>
     import { linePath, marks } from "./index.js";
     import car from "../../assets/image/car.png";
+
     import routeTable from "../../components/Map/RouteTable";
 
 
@@ -92,13 +93,22 @@
         mounted() {
             let param = {
                 resizeEnable: true,
-                zoom: 15    // 地图缩放范围
+                rotateEnable:true,
+                pitchEnable:true,
+                zoom: 17, // 地图缩放范围
+                pitch:80,
+                rotation:-15,
+                viewMode:'3D',//开启3D视图,默认为关闭
+                buildingAnimation:true,//楼块出现是否带动画
+
+                expandZoomRange:true,
+                zooms:[3,20],
             };
             setTimeout(() => {
 
-
                 this.map = new AMap.Map("container", param);
                 this.init();
+
             }, 500);
 
         },
@@ -186,7 +196,6 @@
                     // 历史轨迹巡航器
                     that.pathSimplifierIns = new PathSimplifier({
                         zIndex: 100,
-                        //autoSetFitView:false,
                         map: that.map, //所属的地图实例
 
                         getPath: function(pathData) {
