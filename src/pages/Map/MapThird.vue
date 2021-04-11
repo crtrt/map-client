@@ -9,8 +9,10 @@
                     <div class="control">
                         <span class='text'>时间：2小时35分钟</span>
                         <span class='text'>里程：300</span>
-                        <div :class="type === 2?'suspend btn':'play btn'" @click="start"></div>
-                        <div class="stop btn" @click="stop"></div>
+
+                        <el-button :class="type === 2?'suspend btn':'play btn'" @click="start" style="padding:0px" type="info">{{btnState}}</el-button>
+                        <el-button class="stop btn" @click="stop"  style="padding:0px" type="info">停止</el-button>
+
                         <div class='step'>速度：<input
                                 class="speedRange"
                                 type="range"
@@ -18,7 +20,7 @@
                                 max="1000"
                                 @change="rangechange"
                                 step="50"
-                                v-model="s" /></div>
+                                v-model="speed" /></div>
                     </div>
                 </a-col>
             </a-row>
@@ -34,9 +36,10 @@
         name: 'MapThird',
         data () {
             return {
-                s: 100,
+                speed: 100,
                 map: {},
                 loading: false,
+                btnState:"开始",
                 columns: [
                     {
                         title: '序号',
@@ -126,7 +129,8 @@
                     resizeEnable: true,
                     center: [116.478935, 39.997761],
                     zoom: 17,
-                 
+
+
                 })
                 // this.setmarker()
                 // AMap.event.addListener(this.map, "click", this.setlostain)
@@ -216,17 +220,21 @@
                 if (this.type === 1) {
                     this.navg.start()// 调用方法开启动画
                     this.type = 2
+                    this.btnState="暂停"
                 } else if (this.type === 2) {
                     this.navg.pause()
                     this.type = 3
+                    this.btnState="开始"
                 } else {
                     this.navg.resume()
                     this.type = 2
+                    this.btnState="暂停"
                 }
             },
             stop () {
                 this.navg.stop()
                 this.type = 1
+                this.btnState="开始"
             }
         }
     }
@@ -257,22 +265,22 @@
         margin-left: 15px;
     }
     .play{
-        /*background: url("../../assets/play_ico.png");*/
+        /*background: url("../../assets/image/play_ico.png");*/
         background-position-x: -28px;
     }
     .stop{
-        /*background: url("../../assets/play_ico.png");*/
-        /*background-positio: ;*/
+        /*background: url("../../assets/image/play_ico.png");*/
+        /*!*background-positio: ;*!*/
         background-position-x: -28px;
         background-position-y: 28px;
-        margin-left: 10px;
+        /*margin-left: 10px;*/
     }
-    .suspend{
-        /*background: url("../../assets/play_ico.png");*/
-        /*background-positio: ;*/
-        background-position-x: -28px;
-        background-position-y: 56px;
-    }
+    /*.suspend{*/
+    /*    background: url("../../assets/image/play_ico.png");*/
+    /*    !*background-positio: ;*!*/
+    /*    background-position-x: -28px;*/
+    /*    background-position-y: 56px;*/
+    /*}*/
     .loading{
         display: flex;
         width: 100%;

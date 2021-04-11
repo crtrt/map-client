@@ -24,8 +24,6 @@
 
 
 
-
-
         <!-- 进度条 -->
         <div class="map-control">
             <Icon
@@ -87,22 +85,26 @@
 
                 table: false,
                 loading: false,
+                gridData:{}
             };
         },
 
         mounted() {
             let param = {
                 resizeEnable: true,
-                rotateEnable:true,
-                pitchEnable:true,
-                zoom: 17, // 地图缩放范围
-                pitch:80,
-                rotation:-15,
-                viewMode:'3D',//开启3D视图,默认为关闭
-                buildingAnimation:true,//楼块出现是否带动画
+                zoom: 15,
 
-                expandZoomRange:true,
-                zooms:[3,20],
+                // resizeEnable: true,
+                // rotateEnable:true,
+                // pitchEnable:true,
+                // zoom: 17, // 地图缩放范围
+                // pitch:80,
+                // rotation:-15,
+                // viewMode:'3D',//开启3D视图,默认为关闭
+                // buildingAnimation:true,//楼块出现是否带动画
+                //
+                // expandZoomRange:true,
+                // zooms:[3,20],
             };
             setTimeout(() => {
 
@@ -168,6 +170,7 @@
                             top:'10px'
                         }
                     }));
+
 
                 })
             },

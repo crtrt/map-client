@@ -7,6 +7,11 @@ import Map from '@/pages/Map/MapIndex'
 import Home from '@/pages/Home'
 import MapSecond from '@/pages/Map/MapSecond'
 import MapThird from '@/pages/Map/MapThird'
+import MapTest from '@/pages/Map/MapTest'
+
+import MapTwoD from '@/pages/Map/MapTwoD'
+import MapThreeD from '@/pages/Map/MapThreeD'
+import MapSatellite from '@/pages/Map/MapSatellite'
 
 // import Setting from '@/pages/Setting'
 // import AdminList from '@/pages/AdminList'
@@ -43,7 +48,7 @@ export default new Router({
       }
     },
     {
-      path: '/Home',
+      path: '/',
       name: 'Home',
       component: Home,
       meta: {
@@ -75,6 +80,48 @@ export default new Router({
       path: '/MapThird',
       name: 'MapThird',
       component: MapThird,
+      meta: {
+        keepAlive: true,
+        title:"Map"
+      }
+    },
+
+
+    {
+      path: '/MapTest',
+      name: 'MapTest',
+      component: MapTest,
+      meta: {
+        keepAlive: true,
+        title:"Map"
+      }
+    },
+
+
+    {
+      path: '/MapTwoD',
+      name: 'MapTwoD',
+      component: MapTwoD,
+      meta: {
+        keepAlive: true,
+        title:"Map"
+      }
+    },
+
+    {
+      path: '/MapThreeD',
+      name: 'MapThreeD',
+      component: MapThreeD,
+      meta: {
+        keepAlive: true,
+        title:"Map"
+      }
+    },
+
+    {
+      path: '/MapSatellite',
+      name: 'MapSatellite',
+      component: MapSatellite,
       meta: {
         keepAlive: true,
         title:"Map"

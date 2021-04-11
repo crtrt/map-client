@@ -22,6 +22,6 @@
         height: calc(100% - 70px);
         margin: 10px;
         padding: 20px;
-        background-color: #fff;
+        /*background-color: #fff;*/
     }
 </style>

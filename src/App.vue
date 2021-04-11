@@ -5,7 +5,7 @@
 
         <the-header v-if="$route.meta.keepAlive"></the-header>
 
-        <div  class="right-container" :class="{'collapse-ml': isCollapse}">
+        <div class="right-container" :class="{'collapse-ml': isCollapse}">
 
             <AppMain></AppMain>
 

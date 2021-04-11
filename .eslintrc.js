@@ -10,9 +10,11 @@ module.exports = {
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly",
-        "BMapGL": "true",
-        "BMapGLLib":"true",
+
+        "BMapGL":"true",
         "BMap":"true",
+        "BMapGLLib":"true",
+        "BMapLib":"true",
 
 
         "AMap": "true",

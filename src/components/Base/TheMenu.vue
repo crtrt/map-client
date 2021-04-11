@@ -22,15 +22,25 @@
             </el-menu-item>
             <el-menu-item index="/Map">
                 <i class="el-icon-menu"></i>
-                <span slot="title">地图</span>
+                <span slot="title">地图3维</span>
             </el-menu-item>
             <el-menu-item index="/MapSecond">
                 <i class="el-icon-menu"></i>
-                <span slot="title">地图2</span>
+                <span slot="title">地图2维</span>
             </el-menu-item>
-            <el-menu-item index="/MapThird">
+
+
+            <el-menu-item index="/MapTwoD">
+                <i class="el-icon-menu"></i>
+                <span slot="title">二维地图</span>
+            </el-menu-item>
+            <el-menu-item index="/MapThreeD">
+                <i class="el-icon-menu"></i>
+                <span slot="title">三维地图</span>
+            </el-menu-item>
+            <el-menu-item index="/MapSatellite">
                 <i class="el-icon-document"></i>
-                <span slot="title">地图3</span>
+                <span slot="title">楼块卫星</span>
             </el-menu-item>
 
         </el-menu>
